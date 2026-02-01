@@ -1,13 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
+import HeroSection from '@/components/home/HeroSection';
+import ServicesSection from '@/components/home/ServicesSection';
+import AboutSection from '@/components/home/AboutSection';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
+import PartnersSection from '@/components/home/PartnersSection';
+import CTASection from '@/components/home/CTASection';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout>
+      <SEOHead
+        title="Home"
+        description="Mkwawa Security Co. Ltd - Your trusted partner for professional security services in Tanzania. Armed guards, CCTV systems, VIP protection, and 24/7 armed response in Dar es Salaam."
+        canonicalUrl="/"
+        keywords="security company Tanzania, security guards Dar es Salaam, CCTV installation Tanzania, armed response, VIP protection, Mkwawa Security"
+      />
+      <HeroSection />
+      <ServicesSection />
+      <AboutSection />
+      <TestimonialsSection />
+      <PartnersSection />
+      <CTASection />
+    </Layout>
   );
 };
 
