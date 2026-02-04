@@ -11,37 +11,49 @@ import {
   ArrowRight 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import serviceGuarding from '@/assets/service-guarding.jpg';
+import serviceArmedResponse from '@/assets/service-armed-response.jpg';
+import serviceCctv from '@/assets/service-cctv.jpg';
+import serviceVip from '@/assets/service-vip.jpg';
+import serviceTraining from '@/assets/service-training.jpg';
+import serviceBackground from '@/assets/service-background.jpg';
 
 const services = [
   {
     icon: Shield,
     title: 'Security Guarding',
     description: 'Armed and unarmed professional guards for residential, commercial, and industrial properties.',
+    image: serviceGuarding,
   },
   {
     icon: Siren,
     title: 'Armed Response',
     description: 'Swift tactical response with GPS-tracked vehicles and highly trained reaction officers.',
+    image: serviceArmedResponse,
   },
   {
     icon: Cctv,
     title: 'Security Systems',
     description: 'CCTV, alarms, electric fencing, access control, and surveillance camera installation.',
+    image: serviceCctv,
   },
   {
     icon: Users,
     title: 'VIP Protection',
     description: 'Executive protection and transport escort services for high-profile individuals.',
+    image: serviceVip,
   },
   {
     icon: GraduationCap,
     title: 'Training & Consulting',
     description: 'Security training programs and professional consulting for tailored security solutions.',
+    image: serviceTraining,
   },
   {
     icon: Lock,
     title: 'Background Checks',
     description: 'Comprehensive background screening and lie detector tests for employee verification.',
+    image: serviceBackground,
   },
 ];
 
@@ -95,17 +107,30 @@ const ServicesSection = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="group bg-card rounded-xl p-8 shadow-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-border"
+              className="group bg-card rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-border"
             >
-              <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                <service.icon className="w-7 h-7 text-accent group-hover:text-accent-foreground transition-colors" />
+              {/* Service Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                <div className="absolute bottom-4 left-4 w-12 h-12 rounded-lg bg-accent flex items-center justify-center">
+                  <service.icon className="w-6 h-6 text-accent-foreground" />
+                </div>
               </div>
-              <h3 className="font-heading text-xl font-bold text-foreground mb-3">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {service.description}
-              </p>
+              
+              {/* Service Content */}
+              <div className="p-6">
+                <h3 className="font-heading text-xl font-bold text-foreground mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
