@@ -6,9 +6,13 @@ import { Shield, ArrowRight, Phone, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import QuoteCalculator from './QuoteCalculator';
 import heroImage from '@/assets/hero-security.jpg';
 import { z } from 'zod';
+
 
 const formSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
@@ -253,7 +257,10 @@ const HeroSection = () => {
                   Privacy Policy
                 </Link>
               </p>
+                </TabsContent>
+              </Tabs>
             </div>
+
           </motion.div>
         </div>
       </div>
