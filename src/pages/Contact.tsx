@@ -69,7 +69,14 @@ const Contact = () => {
         message: data.get('message'),
       });
 
-      const { error } = await supabase.from('leads').insert({ ...parsed, source: 'contact-page' });
+      const { error } = await supabase.from('leads').insert({
+        name: parsed.name as string,
+        phone: parsed.phone as string,
+        email: parsed.email as string,
+        service: parsed.service ?? null,
+        message: parsed.message as string,
+        source: 'contact-page',
+      });
       if (error) throw error;
 
       setIsSubmitted(true);

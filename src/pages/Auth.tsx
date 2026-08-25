@@ -44,7 +44,10 @@ const Auth = () => {
     setBusy(true);
     try {
       const parsed = credentialsSchema.parse(login);
-      const { error } = await supabase.auth.signInWithPassword(parsed);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: parsed.email as string,
+        password: parsed.password as string,
+      });
       if (error) throw error;
       navigate('/crm', { replace: true });
     } catch (error) {
@@ -60,8 +63,8 @@ const Auth = () => {
     try {
       const parsed = signUpSchema.parse(signup);
       const { error } = await supabase.auth.signUp({
-        email: parsed.email,
-        password: parsed.password,
+        email: parsed.email as string,
+        password: parsed.password as string,
         options: {
           emailRedirectTo: `${window.location.origin}/crm`,
           data: { full_name: parsed.fullName, phone: parsed.phone },
