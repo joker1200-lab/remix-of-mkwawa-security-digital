@@ -163,7 +163,18 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:ml-auto"
           >
-            <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-border max-w-md">
+            <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-2xl border border-border max-w-md">
+              <Tabs defaultValue="quote">
+                <TabsList className="grid grid-cols-2 w-full mb-6">
+                  <TabsTrigger value="quote">Free Quote</TabsTrigger>
+                  <TabsTrigger value="calculator">Cost Calculator</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="calculator">
+                  <QuoteCalculator />
+                </TabsContent>
+
+                <TabsContent value="quote">
               <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
                 Get a Free Quote
               </h3>
@@ -172,6 +183,7 @@ const HeroSection = () => {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+
                 <div>
                   <Input
                     type="text"
