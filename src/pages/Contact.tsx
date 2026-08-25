@@ -157,6 +157,8 @@ const Contact = () => {
                       </label>
                       <Input
                         required
+                        name="name"
+                        maxLength={100}
                         placeholder="Your full name"
                         className="bg-card"
                       />
@@ -167,7 +169,9 @@ const Contact = () => {
                       </label>
                       <Input
                         required
+                        name="phone"
                         type="tel"
+                        maxLength={20}
                         placeholder="+255 xxx xxx xxx"
                         className="bg-card"
                       />
@@ -179,7 +183,9 @@ const Contact = () => {
                     </label>
                     <Input
                       required
+                      name="email"
                       type="email"
+                      maxLength={255}
                       placeholder="your@email.com"
                       className="bg-card"
                     />
@@ -189,6 +195,7 @@ const Contact = () => {
                       Service Interested In
                     </label>
                     <select
+                      name="service"
                       className="w-full h-10 px-3 rounded-md border border-input bg-card text-foreground"
                     >
                       <option value="">Select a service...</option>
@@ -206,7 +213,9 @@ const Contact = () => {
                     </label>
                     <Textarea
                       required
+                      name="message"
                       rows={5}
+                      maxLength={1000}
                       placeholder="Tell us about your security needs..."
                       className="bg-card"
                     />
