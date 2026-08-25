@@ -6,9 +6,13 @@ import { Shield, ArrowRight, Phone, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import QuoteCalculator from './QuoteCalculator';
 import heroImage from '@/assets/hero-security.jpg';
 import { z } from 'zod';
+
 
 const formSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
@@ -34,28 +38,33 @@ const HeroSection = () => {
 
     try {
       const validated = formSchema.parse(formData);
-      
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
+      const { error } = await supabase.from('leads').insert({
+        name: validated.name,
+        phone: validated.phone,
+        service: validated.service,
+        message: validated.message || null,
+        source: 'hero-form',
+      });
+      if (error) throw error;
+
       toast({
         title: 'Request Submitted!',
         description: 'We will contact you within 24 hours.',
       });
-      
+
       setFormData({ name: '', phone: '', service: '', message: '' });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Please check your input',
-          description: error.errors[0].message,
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Please check your input',
+        description: error instanceof z.ZodError ? error.errors[0].message : (error as Error).message,
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -158,7 +167,18 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:ml-auto"
           >
-            <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-border max-w-md">
+            <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-2xl border border-border max-w-md">
+              <Tabs defaultValue="quote">
+                <TabsList className="grid grid-cols-2 w-full mb-6">
+                  <TabsTrigger value="quote">Free Quote</TabsTrigger>
+                  <TabsTrigger value="calculator">Cost Calculator</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="calculator">
+                  <QuoteCalculator />
+                </TabsContent>
+
+                <TabsContent value="quote">
               <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
                 Get a Free Quote
               </h3>
@@ -167,6 +187,7 @@ const HeroSection = () => {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+
                 <div>
                   <Input
                     type="text"
@@ -236,7 +257,10 @@ const HeroSection = () => {
                   Privacy Policy
                 </Link>
               </p>
+                </TabsContent>
+              </Tabs>
             </div>
+
           </motion.div>
         </div>
       </div>
