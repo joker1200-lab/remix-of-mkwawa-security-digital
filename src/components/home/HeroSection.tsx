@@ -34,28 +34,33 @@ const HeroSection = () => {
 
     try {
       const validated = formSchema.parse(formData);
-      
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
+      const { error } = await supabase.from('leads').insert({
+        name: validated.name,
+        phone: validated.phone,
+        service: validated.service,
+        message: validated.message || null,
+        source: 'hero-form',
+      });
+      if (error) throw error;
+
       toast({
         title: 'Request Submitted!',
         description: 'We will contact you within 24 hours.',
       });
-      
+
       setFormData({ name: '', phone: '', service: '', message: '' });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Please check your input',
-          description: error.errors[0].message,
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Please check your input',
+        description: error instanceof z.ZodError ? error.errors[0].message : (error as Error).message,
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
