@@ -92,7 +92,10 @@ const Header = () => {
             </nav>
 
             {/* CTA Button */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex items-center gap-4">
+              <Link to="/auth" className="font-heading text-xs uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors">
+                Staff Login
+              </Link>
               <Button asChild className="bg-accent text-accent-foreground hover:bg-gold-dark font-heading font-semibold px-6">
                 <Link to="/contact">Get a Quote</Link>
               </Button>
@@ -148,6 +151,9 @@ const Header = () => {
                 <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-gold-dark font-heading font-semibold">
                   <Link to="/contact">Get a Quote</Link>
                 </Button>
+                <Link to="/auth" className="block text-center mt-3 font-heading text-sm uppercase tracking-wide text-muted-foreground">
+                  Staff Login
+                </Link>
               </motion.div>
               
               {/* Mobile Contact Info */}
