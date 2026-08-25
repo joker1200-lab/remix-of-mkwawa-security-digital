@@ -8,6 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { z } from 'zod';
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2, 'Full name is required').max(100),
+  phone: z.string().trim().min(7, 'Valid phone number is required').max(20),
+  email: z.string().trim().email('Enter a valid email address').max(255),
+  service: z.string().trim().max(50).nullable(),
+  message: z.string().trim().min(5, 'Please describe your security needs').max(1000),
+});
+
 
 const contactInfo = [
   {
@@ -47,16 +58,36 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const data = new FormData(e.currentTarget);
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting us. We will get back to you soon.',
-    });
+    try {
+      const parsed = contactSchema.parse({
+        name: data.get('name'),
+        phone: data.get('phone'),
+        email: data.get('email'),
+        service: data.get('service') || null,
+        message: data.get('message'),
+      });
+
+      const { error } = await supabase.from('leads').insert({ ...parsed, source: 'contact-page' });
+      if (error) throw error;
+
+      setIsSubmitted(true);
+      toast({
+        title: 'Message Sent!',
+        description: 'Thank you for contacting us. We will get back to you soon.',
+      });
+    } catch (error) {
+      toast({
+        title: 'Please check your details',
+        description: error instanceof z.ZodError ? error.errors[0].message : (error as Error).message,
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <Layout>
